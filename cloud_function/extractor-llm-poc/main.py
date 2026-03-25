@@ -156,7 +156,7 @@ def _safe_int(x):
 # -------------------- VERTEX AI CALL --------------------
 def _vertex_extract_fields(raw_text: str) -> dict:
     """
-    Ask Gemini to return JSON with exactly: price, year, make, model, mileage.
+    Ask Gemini to return JSON with exactly: price, year, make, model, mileage, condition, title_status, location, seller_type.
     """
     model = _get_vertex_model()
 
@@ -164,11 +164,18 @@ def _vertex_extract_fields(raw_text: str) -> dict:
     schema = {
         "type": "object",
         "properties": {
+            # --- Original A06 fields ---
             "price": {"type": "integer", "nullable": True},
             "year": {"type": "integer", "nullable": True},
             "make": {"type": "string", "nullable": True},
             "model": {"type": "string", "nullable": True},
             "mileage": {"type": "integer", "nullable": True},
+
+            # --- New A07 fields ---
+            "condition": {"type": "string", "nullable": True},
+            "title_status": {"type": "string", "nullable": True},
+            "location":     {"type": "string", "nullable": True},
+            "seller_type":  {"type": "string", "nullable": True},
         },
         "required": ["price", "year", "make", "model", "mileage"]
     }
@@ -230,6 +237,12 @@ def _vertex_extract_fields(raw_text: str) -> dict:
 
     parsed["make"] = _norm_str(parsed.get("make"))
     parsed["model"] = _norm_str(parsed.get("model"))
+    
+    # Add these for A07 fields
+    parsed["condition"] = _norm_str(parsed.get("condition"))
+    parsed["title_status"] = _norm_str(parsed.get("title_status"))
+    parsed["location"] = _norm_str(parsed.get("location"))
+    parsed["seller_type"] = _norm_str(parsed.get("seller_type"))
 
     return parsed
 
@@ -318,6 +331,13 @@ def llm_extract_http(request: Request):
                 "make": parsed.get("make"),
                 "model": parsed.get("model"),
                 "mileage": parsed.get("mileage"),
+                
+                # Added new fields
+                "condition": parsed.get("condition"),     
+                "title_status": parsed.get("title_status"),
+                "location": parsed.get("location"),         
+                "seller_type": parsed.get("seller_type"), 
+                
                 "llm_provider": "vertex",
                 "llm_model": LLM_MODEL,
                 "llm_ts": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
