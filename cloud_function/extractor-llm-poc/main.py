@@ -35,7 +35,8 @@ STRUCTURED_PREFIX    = os.getenv("STRUCTURED_PREFIX", "structured")
 LLM_PROVIDER         = os.getenv("LLM_PROVIDER", "vertex").lower()
 LLM_MODEL            = os.getenv("LLM_MODEL", "gemini-2.5-flash")
 OVERWRITE_DEFAULT    = os.getenv("OVERWRITE", "false").lower() == "true"
-MAX_FILES_DEFAULT    = int(os.getenv("MAX_FILES", "0") or 0)
+#AX_FILES_DEFAULT    = int(os.getenv("MAX_FILES", "0") or 0)
+MAX_FILES_DEFAULT    = int(os.getenv("MAX_FILES", "30") or 30) # this sets it to grab the 30 most recent records per hour
 
 # GCS READ RETRY - Use default transient error logic
 READ_RETRY = gax_retry.Retry(
