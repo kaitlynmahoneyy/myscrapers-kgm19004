@@ -1,0 +1,18 @@
+{
+  "run_ts": "20260407_142205",
+  "best_model": "Random Forest",
+  "n_train": 300,
+  "n_test": 75,
+  "n_total": 375,
+  "best_params": {
+    "reg__criterion": "absolute_error",
+    "reg__max_depth": 10,
+    "reg__min_samples_leaf": 10,
+    "reg__min_samples_split": 5,
+    "reg__n_estimators": 200
+  },
+  "MAE": 5926.77,
+  "RMSE": 13803.26,
+  "MAPE": 46.97,
+  "Bias": -3494.04
+}
